@@ -1,1 +1,1 @@
-# ibadrather-friend_detection_app
+Detect if my friends are in a photo.
