@@ -39,9 +39,9 @@ class FaceDataset(Dataset):
 
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = cv2.resize(image, (150, 150), interpolation=cv2.INTER_AREA)
+        image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)
         image = image.transpose((2, 0, 1))
-        image = torch.from_numpy(image)
+        image = torch.from_numpy(image).float()
         return image, label
 
 
@@ -56,12 +56,10 @@ def main():
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    input_data = torch.randn(2, 3, 224, 244)    # 2 images of dims(224, 224, 3)
+    input_data = torch.randn(2, 3, 224, 244)  # 2 images of dims(224, 224, 3)
     data_channels = input_data.shape[1]
-    
-    net = Resnet12(data_channels=data_channels,
-                   output_size=3)
 
+    net = Resnet12(data_channels=data_channels, output_size=3)
 
     print(summary(net, input_data=input_data, verbose=0))
 
