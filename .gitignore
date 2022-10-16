@@ -1,3 +1,15 @@
+############################################################
+*.mp4
+*.png
+*.jpg
+
+lightning_logs
+videos
+dataset
+face_dataset
+
+############################################################
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
