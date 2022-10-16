@@ -5,7 +5,7 @@ import os
 from utils import make_folder, crop_image
 from tqdm import tqdm
 
-base_path = "/home/ibad/Desktop/ibu_friend_detection_app/"
+base_path = "/home/ibad/Desktop/friend_detection_app/"
 
 people = [
     osp.join("dataset", person)
