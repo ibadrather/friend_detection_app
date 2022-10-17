@@ -24,4 +24,4 @@ video_list = [
 for video in tqdm(video_list):
     frame_dir = osp.join("dataset", video[1])
     make_folder(frame_dir)
-    video_to_frames(video[0], frame_dir, frame_rate=10, rotate=180)
+    video_to_frames(video[0], frame_dir, frame_rate=15, rotate=180)

@@ -41,6 +41,8 @@ class FaceDataset(Dataset):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         image = cv2.resize(image, (224, 224), interpolation=cv2.INTER_AREA)
         image = image.transpose((2, 0, 1))
+        # Normalising the image here
+        image = image / 255.0
         image = torch.from_numpy(image).float()
         return image, label
 

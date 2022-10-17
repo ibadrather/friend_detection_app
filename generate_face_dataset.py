@@ -7,6 +7,11 @@ from tqdm import tqdm
 import random
 import time
 
+try:
+    os.system("clear")
+except:
+    pass
+
 base_path = "/home/ibad/Desktop/friend_detection_app/"
 
 people = [
@@ -16,10 +21,10 @@ people = [
 ]
 
 # Percentage of train samples
-train_percent = 0.8
+train_percent = 0.85
 
 # Get the faces for each person from the photographs and save them
-for person in tqdm(people):
+for person in tqdm(people, leave=False):
     person_dir_train = osp.join(
         base_path, "face_dataset", "train", person.split("/")[-1]
     )
@@ -29,7 +34,7 @@ for person in tqdm(people):
     make_folder(person_dir_val)
     # First we will get all images associated with a person and save they dir loc in a list
     all_images = []
-    for image in tqdm(os.listdir(person)):
+    for image in tqdm(os.listdir(person), leave=False):
         image_path = osp.join(person, image)
         all_images.append(image_path)
 
@@ -39,7 +44,7 @@ for person in tqdm(people):
     val_images = all_images[int(train_percent * len(all_images)) :]
 
     # Save the faces in the train folder
-    for image in tqdm(train_images):
+    for image_path in tqdm(train_images, leave=False):
         image = face_recognition.load_image_file(image_path)
         face_locations = face_recognition.face_locations(image)
         for face_location in face_locations:
@@ -52,7 +57,7 @@ for person in tqdm(people):
             )
 
     # Save the faces in the val folder
-    for image in tqdm(val_images):
+    for image_path in tqdm(val_images, leave=False):
         image = face_recognition.load_image_file(image_path)
         face_locations = face_recognition.face_locations(image)
         for face_location in face_locations:

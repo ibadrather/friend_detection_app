@@ -26,10 +26,10 @@ class FaceDataModule(pl.LightningDataModule):
         )
 
     def val_dataloader(self):
-        return DataLoader(self.val_dataset, batch_size=1, num_workers=cpu_count())
+        return DataLoader(self.val_dataset, batch_size=2, num_workers=cpu_count())
 
     def test_dataloader(self):
-        return DataLoader(self.val_dataset, batch_size=1, num_workers=cpu_count())
+        return DataLoader(self.val_dataset, batch_size=2, num_workers=cpu_count())
 
 
 class FriendFaceDetector(pl.LightningModule):
