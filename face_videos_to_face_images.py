@@ -8,9 +8,15 @@ from utils import video_to_frames, make_folder
 from tqdm import tqdm
 
 video_list = [
-    (osp.join("videos", video), video[:-4])
+    (osp.join("videos", video), video.split("_")[0])
     for video in os.listdir("videos")
     if ".mp4" in video
+    or ".avi" in video
+    or ".mov" in video
+    or ".mkv" in video
+    or ".webm" in video
+    or ".flv" in video
+    or ".wmv" in video
 ]
 
 # get frame from video

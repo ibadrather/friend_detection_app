@@ -2,6 +2,7 @@ import numpy as np
 import cv2
 import os.path as osp
 import os
+import time
 
 
 def video_to_frames(
@@ -28,7 +29,7 @@ def video_to_frames(
                 image = np.rot90(image, 2)
             image = cv2.resize(image, (w, h), interpolation=cv2.INTER_AREA)
             cv2.imwrite(
-                osp.join(frames_path, f"{name}_{count_n}.png"), image
+                osp.join(frames_path, f"{name}_{str(int(time.time()*1e4))}.png"), image
             )  # save frame as JPEG file
             count_n += 1
         success, image = vidcap.read()
