@@ -12,7 +12,7 @@ try:
 except:
     pass
 
-pl.seed_everything(42)
+pl.seed_everything(532232341)
 
 # Setting up data module
 data_module = FaceDataModule(batch_size=16)
@@ -65,5 +65,5 @@ trainer = pl.Trainer(
 # train model
 trainer.fit(model, datamodule=data_module)
 
-# save model
-trainer.save_checkpoint("training_output/friend-detection.ckpt")
+# # save model
+# trainer.save_checkpoint("training_output/friend-detection.ckpt")

@@ -237,7 +237,7 @@ class NetExample(nn.Module):
         # Stride:            1 x 1
         # Padding:           SAME
         self.conv1 = nn.Conv2d(
-            in_channels=in_channels, out_channels=4, kernel_size=(5, 5), padding=2
+            in_channels=in_channels, out_channels=8, kernel_size=(5, 5), padding=2
         )
         # How many parameters are in conv1 layer?
         # 5 x 5 x 3 x 4 = 300
@@ -245,7 +245,7 @@ class NetExample(nn.Module):
         self.pool1 = nn.MaxPool2d(2, 2)
         # B x 4 x 112 x 112
         self.conv2 = nn.Conv2d(
-            in_channels=4, out_channels=8, kernel_size=(5, 5), padding=2
+            in_channels=8, out_channels=8, kernel_size=(5, 5), padding=2
         )
         # 5 x 5 x 4 x 8 = 3200
         # B x 8 x 112 x 112

@@ -6,14 +6,14 @@ from utils import make_folder, crop_image
 from tqdm import tqdm
 import onnxruntime as ort
 from annotation_prediction_utils import face_image_for_onnx_model, MyRec
-
+import numpy as np
 try:
     os.system("clear")
 except:
     pass
 
 # Loading trained Model
-ort_session = ort.InferenceSession("my_friend_detection.onnx")
+ort_session = ort.InferenceSession("my_friend_detection_v2.onnx")
 
 
 # Images for testing
@@ -24,6 +24,8 @@ test_images = [
     if ".jpg" in image or ".png" in image
 ][:]
 
+# Encoding
+encoding_ = np.load("/home/ibad/Desktop/friend_detection_app/classes_ecoding.npy")
 
 # font
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -55,12 +57,14 @@ for test_image in tqdm(test_images, leave=False):
         ort_inputs = {ort_session.get_inputs()[0].name: face_image}
         prediction = ort_session.run(None, ort_inputs)[0].argmax()
 
-        if prediction == 0:
-            prediction = "Murad"
-        elif prediction == 1:
-            prediction = "Ibad"
-        elif prediction == 2:
-            prediction = "Adnan"
+        # if prediction == 0:
+        #     prediction = "Murad"
+        # elif prediction == 1:
+        #     prediction = "Ibad"
+        # elif prediction == 2:
+        #     prediction = "Adnan"
+
+        prediction = encoding_[prediction]
 
         # Draw rectangle and write predicted label
         cv2.rectangle(image, (left, top), (right, bottom), (220, 255, 220), 1)

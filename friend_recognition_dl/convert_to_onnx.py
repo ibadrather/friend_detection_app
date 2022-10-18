@@ -17,7 +17,7 @@ except:
 
 # Model Checkpoint
 model_dir = (
-    "lightning_logs/friend-detection/version_2/checkpoints/epoch=49-step=900.ckpt"
+    "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_6/checkpoints/epoch=49-step=900.ckpt"
 )
 
 # Loading the state dict into the model
