@@ -59,7 +59,7 @@ class FriendFaceDetector(pl.LightningModule):
         feat, label = batch
 
         logits = self.forward(feat)
-        loss = self.criterion(logits, label)
+        loss = self.criterion(logits, label.squeeze(1))
         self.log("train_loss", loss, prog_bar=True, logger=True)
         return loss
 
@@ -67,9 +67,9 @@ class FriendFaceDetector(pl.LightningModule):
         feat, label = batch
 
         logits = self.forward(feat)
-        loss = self.criterion(logits, label)
+        loss = self.criterion(logits, label.squeeze(1))
         preds = F.log_softmax(logits, dim=1).argmax(dim=1)
-        self.val_accuracy.update(preds, label)
+        self.val_accuracy.update(preds, label.squeeze(1))
 
         # Calling self.log will surface up scalars for you in TensorBoard
         self.log("val_loss", loss, prog_bar=True, logger=True)
@@ -81,9 +81,9 @@ class FriendFaceDetector(pl.LightningModule):
         feat, label = batch
 
         logits = self.forward(feat)
-        loss = self.criterion(logits, label)
+        loss = self.criterion(logits, label.squeeze(1))
         preds = F.log_softmax(logits, dim=1).argmax(dim=1)
-        self.test_accuracy.update(preds, label)
+        self.test_accuracy.update(preds, label.squeeze(1))
 
         # Calling self.log will surface up scalars for you in TensorBoard
         self.log("test_loss", loss, prog_bar=True, logger=True)

@@ -1,9 +1,11 @@
 import cv2
 import os
+import numpy as np
 import os.path as osp
 
 import torch
-from torch.utils.data import Dataset, DataLoader
+from torch.utils.data import Dataset
+from sklearn import preprocessing  # for label encoding
 
 
 class FaceDataset(Dataset):
@@ -24,18 +26,25 @@ class FaceDataset(Dataset):
 
             self.all_data.extend(data)
 
+        # Generating Labels
+        self.labels = [label for _, label in self.all_data]
+
+        # Label Encoding
+        le = preprocessing.LabelEncoder()
+        le.fit_transform(self.labels)
+
+        self.labels = le.classes_
+
+        # Save encoding data
+        np.save("classes_ecoding", le.classes_)
+
     def __len__(self):
         return len(self.all_data)
 
     def __getitem__(self, idx):
         image_path, label = self.all_data[idx]
 
-        if label == "ibad":
-            label = 0
-        elif label == "murad":
-            label = 1
-        elif label == "adnan":
-            label = 2
+        label = np.where(self.labels == label)[0]
 
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
@@ -48,41 +57,23 @@ class FaceDataset(Dataset):
 
 
 def main():
-    from model import Resnet18, Resnet12
-    from torchinfo import summary
+    from torch.utils.data import DataLoader
 
     try:
         os.system("clear")
     except:
         pass
 
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    train_dataset = FaceDataset(osp.join("face_dataset", "train"))
+    train_dataloader = DataLoader(train_dataset, batch_size=1, shuffle=True)
 
-    input_data = torch.randn(2, 3, 224, 244)  # 2 images of dims(224, 224, 3)
-    data_channels = input_data.shape[1]
+    #print(np.load("/home/ibad/Desktop/friend_detection_app/classes_ecoding.npy"))
 
-    net = Resnet12(data_channels=data_channels, output_size=3)
+    a = iter(train_dataloader)
+    c, d = next(a)
 
-    print(summary(net, input_data=input_data, verbose=0))
-
-    # train_dataset = FaceDataset(osp.join("face_dataset", "train"))
-    # train_dataloader = DataLoader(train_dataset, batch_size=1, shuffle=True)
-
-    # val_dataset = FaceDataset(osp.join("face_dataset", "val"))
-    # val_dataloader = DataLoader(val_dataset, batch_size=1, shuffle=True)
-
-    # for image, label in train_dataloader:
-    #     # image = image.numpy()
-    #     # image = image.transpose((0, 2, 3, 1))
-    #     # image = image[0]
-    #     # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    #     # cv2.imshow("image", image)
-    #     # cv2.waitKey(0)
-
-    #     print(image.shape)
-    #     print(label)
-
-    #     break
+    print(d.shape)
+    
 
 
 if __name__ == "__main__":

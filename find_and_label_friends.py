@@ -81,8 +81,8 @@ for test_image in tqdm(test_images, leave=False):
     # cv2.imshow("Image", image)
     # cv2.waitKey(10000)
     # cv2.destroyAllWindows()
-    
+
     # Save image
     cv2.imwrite(osp.join("test_results", osp.basename(test_image)), image)
-    
+
 print("All images annotated and saved in test_results folder")
