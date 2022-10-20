@@ -17,11 +17,11 @@ except:
 
 # Model Checkpoint
 model_dir = (
-    "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_6/checkpoints/epoch=49-step=900.ckpt"
+    "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_9/checkpoints/epoch=43-step=3080.ckpt"
 )
 
 # Loading the state dict into the model
-net = NetExample(in_channels=3, out_classes=3)
+net = NetExample(in_channels=3, out_classes=4)
 torch_model = FriendFaceDetector(net)
 state_dict = torch.load(model_dir)["state_dict"]
 torch_model.load_state_dict(state_dict)

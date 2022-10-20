@@ -27,7 +27,7 @@ print("Target Shape", targ.shape)
 
 # net = Resnet12(data_channels=3, output_size=3)
 # net = SimpleCNN(data_channels=3, output_size=3)
-net = NetExample(in_channels=3, out_classes=3)
+net = NetExample(in_channels=3, out_classes=4)
 
 # Defining Callbacks
 checkpoint_callback = ModelCheckpoint(
@@ -49,7 +49,7 @@ early_stopping_callback = EarlyStopping(monitor="val_loss", patience=50)
 progress_bar = TQDMProgressBar(refresh_rate=1)
 
 # Model
-model = FriendFaceDetector(net, lr=1e-5)
+model = FriendFaceDetector(net, lr=0.5e-6)
 
 # Defining a Pytorch Lightning Trainer
 N_EPOCHS = 50

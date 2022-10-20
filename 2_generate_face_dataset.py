@@ -14,10 +14,12 @@ except:
 
 base_path = "/home/ibad/Desktop/friend_detection_app/"
 
+raw_data_dir = "other_people"
+
 people = [
-    osp.join("dataset", person)
-    for person in os.listdir("dataset")
-    if osp.isdir(osp.join("dataset", person))
+    osp.join(raw_data_dir, person)
+    for person in os.listdir(raw_data_dir)
+    if osp.isdir(osp.join(raw_data_dir, person))
 ]
 
 # Percentage of train samples
@@ -32,6 +34,7 @@ for person in tqdm(people, leave=False):
 
     make_folder(person_dir_train)
     make_folder(person_dir_val)
+    
     # First we will get all images associated with a person and save they dir loc in a list
     all_images = []
     for image in tqdm(os.listdir(person), leave=False):

@@ -13,8 +13,7 @@ except:
     pass
 
 # Loading trained Model
-ort_session = ort.InferenceSession("my_friend_detection_v2.onnx")
-
+ort_session = ort.InferenceSession("my_friend_detection_v4.onnx")
 
 # Images for testing
 test_images_dir = "/home/ibad/Desktop/friend_detection_app/test_images/"
@@ -56,13 +55,6 @@ for test_image in tqdm(test_images, leave=False):
         # get model prediction
         ort_inputs = {ort_session.get_inputs()[0].name: face_image}
         prediction = ort_session.run(None, ort_inputs)[0].argmax()
-
-        # if prediction == 0:
-        #     prediction = "Murad"
-        # elif prediction == 1:
-        #     prediction = "Ibad"
-        # elif prediction == 2:
-        #     prediction = "Adnan"
 
         prediction = encoding_[prediction]
 
