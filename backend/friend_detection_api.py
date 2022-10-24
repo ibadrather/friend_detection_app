@@ -32,21 +32,26 @@ def index():
     return {"status": "ok"}
 
 @app.post("/upload_image")
-async def main(image: UploadFile = File(...)):
-    image_typesbytes = await image.read()
-    nparr = np.fromstring(image_typesbytes, np.uint8)
-    img_np = cv2.imdecode(nparr, cv2.IMREAD_ANYCOLOR)
-    h, w, c = img_np.shape
-    img_np = cv2.resize(img_np, (w // 6, h // 6), interpolation=cv2.INTER_AREA)
+async def receive_image(img: UploadFile=File(...)):
+    ## Receiving and decoding the image
+    contents = await img.read()
+
+    nparr = np.fromstring(contents, np.uint8)
+    cv2_img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+
+    # Resizing without changing aspect ratio
+    h, w, c = cv2_img.shape
+
+    aspect_ratio = w/h
+
+    image = cv2.resize(cv2_img, (720, int(720/aspect_ratio)), interpolation=cv2.INTER_AREA)
 
     # Finding face location
-    # print("Finding face location")
-    face_locations = face_recognition.face_locations(img_np)
-    # print("Working.......")
-    # print(face_locations)
+    face_locations = face_recognition.face_locations(image)
+
     for face_location in face_locations:
         top, right, bottom, left = face_location
-        face_image = crop_image(img_np, (top, left, bottom, right))
+        face_image = crop_image(image, (top, left, bottom, right))
         face_image = cv2.cvtColor(face_image, cv2.COLOR_RGB2BGR)
 
         # prepare for NN inference
@@ -58,14 +63,12 @@ async def main(image: UploadFile = File(...)):
 
         prediction = encoding_[prediction]
 
-        # print(prediction)
-
         # Draw rectangle and write predicted label
-        cv2.rectangle(img_np, (left, top), (right, bottom), (220, 255, 220), 1)
-        MyRec(img_np, left, top, right - left, bottom - top, 10, (0, 250, 0), 3)
+        cv2.rectangle(image, (left, top), (right, bottom), (220, 255, 220), 1)
+        MyRec(image, left, top, right - left, bottom - top, 10, (0, 250, 0), 3)
         font = cv2.FONT_HERSHEY_SIMPLEX
         cv2.putText(
-            img_np,
+            image,
             prediction,
             (left, top),
             font,
@@ -75,10 +78,6 @@ async def main(image: UploadFile = File(...)):
             cv2.LINE_AA,
         )
 
-    #cv2.imwrite("result.jpg", img_np)
-
-    #return StreamingResponse(io.BytesIO(img_np.tobytes()), media_type="image/png")
-
     ### Encoding and responding with the image
-    im = cv2.imencode('.png', img_np)[1] # extension depends on which format is sent from Streamlit
-    return Response(content=im.tobytes(), media_type="image/png")
+    captioned_image = cv2.imencode('.png', image)[1] # extension depends on which format is sent from Streamlit
+    return Response(content=captioned_image.tobytes(), media_type="image/png")
