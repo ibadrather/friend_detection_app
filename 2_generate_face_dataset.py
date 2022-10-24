@@ -34,7 +34,7 @@ for person in tqdm(people, leave=False):
 
     make_folder(person_dir_train)
     make_folder(person_dir_val)
-    
+
     # First we will get all images associated with a person and save they dir loc in a list
     all_images = []
     for image in tqdm(os.listdir(person), leave=False):

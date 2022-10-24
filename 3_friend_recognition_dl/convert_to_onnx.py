@@ -16,9 +16,7 @@ except:
     pass
 
 # Model Checkpoint
-model_dir = (
-    "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_9/checkpoints/epoch=43-step=3080.ckpt"
-)
+model_dir = "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_9/checkpoints/epoch=43-step=3080.ckpt"
 
 # Loading the state dict into the model
 net = NetExample(in_channels=3, out_classes=4)

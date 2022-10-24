@@ -36,7 +36,7 @@ class FaceDataset(Dataset):
         self.labels = le.classes_
 
         # Save encoding data
-        np.save("classes_ecoding", le.classes_)
+        np.save("classes_encoding", le.classes_)
 
     def __len__(self):
         return len(self.all_data)
@@ -67,13 +67,12 @@ def main():
     train_dataset = FaceDataset(osp.join("face_dataset", "train"))
     train_dataloader = DataLoader(train_dataset, batch_size=1, shuffle=True)
 
-    #print(np.load("/home/ibad/Desktop/friend_detection_app/classes_ecoding.npy"))
+    # print(np.load("/home/ibad/Desktop/friend_detection_app/classes_ecoding.npy"))
 
     a = iter(train_dataloader)
     c, d = next(a)
 
     print(d.shape)
-    
 
 
 if __name__ == "__main__":

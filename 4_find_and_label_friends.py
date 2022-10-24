@@ -7,6 +7,7 @@ from tqdm import tqdm
 import onnxruntime as ort
 from annotation_prediction_utils import face_image_for_onnx_model, MyRec
 import numpy as np
+
 try:
     os.system("clear")
 except:
@@ -24,7 +25,7 @@ test_images = [
 ][:]
 
 # Encoding
-encoding_ = np.load("/home/ibad/Desktop/friend_detection_app/classes_ecoding.npy")
+encoding_ = np.load("classes_encoding.npy")
 
 # font
 font = cv2.FONT_HERSHEY_SIMPLEX
