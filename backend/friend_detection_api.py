@@ -3,17 +3,16 @@ import onnxruntime as ort
 import numpy as np
 import face_recognition
 import cv2
-from utils import make_folder, crop_image
+from utils import crop_image
 from annotation_prediction_utils import face_image_for_onnx_model, MyRec
-import io
-from starlette.responses import StreamingResponse
+from starlette.responses import Response
 
 
 # Loading trained Model
-ort_session = ort.InferenceSession("my_friend_detection_v2.onnx")
+ort_session = ort.InferenceSession("models/my_friend_detection_v2.onnx")
 
 # Encoding
-encoding_ = np.load("classes_encoding.npy")
+encoding_ = np.load("models/classes_encoding.npy")
 
 # font
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -28,7 +27,11 @@ thickness = 2
 # API
 app = FastAPI()
 
-@app.post("/")
+@app.get("/")
+def index():
+    return {"status": "ok"}
+
+@app.post("/upload_image")
 async def main(image: UploadFile = File(...)):
     image_typesbytes = await image.read()
     nparr = np.fromstring(image_typesbytes, np.uint8)
@@ -74,4 +77,8 @@ async def main(image: UploadFile = File(...)):
 
     #cv2.imwrite("result.jpg", img_np)
 
-    return StreamingResponse(io.BytesIO(img_np.tobytes()), media_type="image/png")
+    #return StreamingResponse(io.BytesIO(img_np.tobytes()), media_type="image/png")
+
+    ### Encoding and responding with the image
+    im = cv2.imencode('.png', img_np)[1] # extension depends on which format is sent from Streamlit
+    return Response(content=im.tobytes(), media_type="image/png")
