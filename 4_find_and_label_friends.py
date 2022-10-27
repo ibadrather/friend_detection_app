@@ -25,7 +25,7 @@ test_images = [
 ][:]
 
 # Encoding
-encoding_ = np.load("classes_encoding.npy")
+encoding_ = np.load("class_encoding.npy")
 
 # font
 font = cv2.FONT_HERSHEY_SIMPLEX

@@ -12,7 +12,7 @@ from starlette.responses import Response
 ort_session = ort.InferenceSession("models/my_friend_detection_v2.onnx")
 
 # Encoding
-encoding_ = np.load("models/classes_encoding.npy")
+encoding_ = np.load("models/class_encoding.npy")
 
 # font
 font = cv2.FONT_HERSHEY_SIMPLEX

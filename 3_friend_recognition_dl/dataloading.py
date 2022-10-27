@@ -36,7 +36,7 @@ class FaceDataset(Dataset):
         self.labels = le.classes_
 
         # Save encoding data
-        np.save("classes_encoding", le.classes_)
+        np.save("class_encoding", le.classes_)
 
     def __len__(self):
         return len(self.all_data)
