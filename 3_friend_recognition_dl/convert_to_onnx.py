@@ -7,7 +7,7 @@ from ptl_modules import FriendFaceDetector
 from dataloading import FaceDataset
 from torch.utils.data import DataLoader
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
-
+from cnn import CNN
 import onnxruntime as ort
 
 try:
@@ -16,10 +16,10 @@ except:
     pass
 
 # Model Checkpoint
-model_dir = "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_9/checkpoints/epoch=43-step=3080.ckpt"
+model_dir = "/home/ibad/Desktop/friend_detection_app/lightning_logs/friend-detection/version_11/checkpoints/epoch=44-step=2340.ckpt"
 
 # Loading the state dict into the model
-net = NetExample(in_channels=3, out_classes=4)
+net = CNN(input_channels=3, num_targets=3)
 torch_model = FriendFaceDetector(net)
 state_dict = torch.load(model_dir)["state_dict"]
 torch_model.load_state_dict(state_dict)
@@ -56,7 +56,7 @@ print("Confusion Matrix: \n", confusion_matrix(actual_pt, predicted_pt))
 torch.onnx.export(
     torch_model,  # model being run
     image,  # model input (or a tuple for multiple inputs)
-    "my_friend_detection.onnx",  # where to save the model (can be a file or file-like object)
+    "my_friend_detection_cnn.onnx",  # where to save the model (can be a file or file-like object)
     export_params=True,  # store the trained parameter weights inside the model file
     opset_version=10,  # the ONNX version to export the model to
     do_constant_folding=True,  # whether to execute constant folding for optimization
@@ -72,7 +72,7 @@ print("Model converted to ONNX")
 
 # Let' test our converted model if accuracy is same
 
-ort_session = ort.InferenceSession("my_friend_detection.onnx")
+ort_session = ort.InferenceSession("my_friend_detection_cnn.onnx")
 
 
 def to_numpy(tensor):

@@ -27,12 +27,14 @@ thickness = 2
 # API
 app = FastAPI()
 
+
 @app.get("/")
 def index():
     return {"status": "ok"}
 
+
 @app.post("/upload_image")
-async def receive_image(img: UploadFile=File(...)):
+async def receive_image(img: UploadFile = File(...)):
     ## Receiving and decoding the image
     contents = await img.read()
 
@@ -42,9 +44,11 @@ async def receive_image(img: UploadFile=File(...)):
     # Resizing without changing aspect ratio
     h, w, c = cv2_img.shape
 
-    aspect_ratio = w/h
+    aspect_ratio = w / h
 
-    image = cv2.resize(cv2_img, (720, int(720/aspect_ratio)), interpolation=cv2.INTER_AREA)
+    image = cv2.resize(
+        cv2_img, (720, int(720 / aspect_ratio)), interpolation=cv2.INTER_AREA
+    )
 
     # Finding face location
     face_locations = face_recognition.face_locations(image)
@@ -79,5 +83,7 @@ async def receive_image(img: UploadFile=File(...)):
         )
 
     ### Encoding and responding with the image
-    captioned_image = cv2.imencode('.png', image)[1] # extension depends on which format is sent from Streamlit
+    captioned_image = cv2.imencode(".png", image)[
+        1
+    ]  # extension depends on which format is sent from Streamlit
     return Response(content=captioned_image.tobytes(), media_type="image/png")

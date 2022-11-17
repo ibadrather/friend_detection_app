@@ -14,7 +14,7 @@ except:
     pass
 
 # Loading trained Model
-ort_session = ort.InferenceSession("my_friend_detection_v4.onnx")
+ort_session = ort.InferenceSession("my_friend_detection_cnn.onnx")
 
 # Images for testing
 test_images_dir = "/home/ibad/Desktop/friend_detection_app/test_images/"

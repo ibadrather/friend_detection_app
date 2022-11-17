@@ -374,3 +374,16 @@ class Net(nn.Module):
         # builtin in CrossEntropyLoss
         # x = self.softmax(x)
         return x
+
+
+def test():
+    from torchinfo import summary
+    data = torch.randn(1, 3, 224, 224)
+    model = NetExample()
+
+    summary(model, input_data=data)
+
+
+if __name__ == "__main__":
+    test()
+    

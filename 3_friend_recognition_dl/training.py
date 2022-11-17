@@ -6,6 +6,7 @@ from pytorch_lightning.callbacks import ModelCheckpoint, EarlyStopping
 
 from model import Resnet18, Resnet12, SimpleCNN, NetExample
 from ptl_modules import FaceDataModule, FriendFaceDetector
+from cnn import CNN
 
 try:
     os.system("clear")
@@ -27,7 +28,7 @@ print("Target Shape", targ.shape)
 
 # net = Resnet12(data_channels=3, output_size=3)
 # net = SimpleCNN(data_channels=3, output_size=3)
-net = NetExample(in_channels=3, out_classes=4)
+net = CNN(input_channels=3, num_targets=3)
 
 # Defining Callbacks
 checkpoint_callback = ModelCheckpoint(
